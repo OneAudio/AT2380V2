@@ -1,0 +1,139 @@
+ ON le 15/04/2017
+CPLD 5M570T100C5N
+
+Version 0.02 du 18/08/17
+-------------------------------
+Ajout de l'extinction des afficheurs si l'oscillateur
+est inactif.
+Version initale non test�e.
+
+Version v0.15 du 01/10/2017
+---------------------------------
+Fonctions ok:
+Asservissement en amplitude (régulation)
+affichage du réglage ou de la valeur en dBV de sortie par strap
+== prévoir un mode d'affichage alterné ?
+== possibilité d'affiché en dBV en mode atténuateur ?
+moyennage 32 samples de la différence entre les deux voies de l'ADC.
+
+To do list :
+Modif matériel pour permettre a l'AD8310 de mesure jusqu'a +10dBV
+(la régulation ne fonctionne pas eu dessus de qq dBV)
+
+La limite de compteur en mode "Auto" régulé ne fonctionne pas
+correctement (9.5 maxi)... A voir.
+
+Version v0.16 du 07/10/2017 (95%)
+---------------------------------
+Fonctionnement ok.
+Reste a faire:
+----------------
+1/ Asservisement, limiter le nimbre d'itération
+2/ En mode affichage dBV, il n'y a pas d'affichage du signe (-) == OK corrigé
+3/ La durée d'appui de 4s est trop long (ajouter un indicateur pour relacher ?)   == OK corrigé
+4/ reglage luminiosité ? == NON ! génére du bruit. On modife les resistance pour avoir moins de courant dans les LEDs
+5/ Leds ? a voir ..
+
+Version v0.17 du 14/10/2017 90%
+---------------------------------
+La lecture de l'ADC a ete re-écrite pour diminuer le nombre de LE et plus de clarté.
+
+Seul reste a voir la limite de l'asservissement pour des valeur tras faible (inférieur a -85dBV).
+Eventuellement aussi le nombre d'itération si l'asservissement n'arrive pas a se stabiliser.
+
+Version v0.18 du 15/10/2017  91%LE.
+----------------------------
+Version finale.5M570ZT100
+Checksum pof : 002E71A9
+Améliorations possible: Asservissement même sans changement de consigne (suivie d'une entrée variable)
+
+Version v0.19 du 10/12/2017  92% 
+----------------------------------
+
+Checksum pof : 002DFC95
+
+Ajout d'un mode calibration dBV en mettant en cavalier à la masse (pattes  9/10 de X16)
+qui met l'attenuateur alternativement a 0/-80dB toute les 5s pour faciliter le réglage
+gain/offset de la mesure dBV.
+
+Version v0.20 du 10/12/2017  93% 
+----------------------------------
+
+Checksum pof : 002E052E
+Modification pour désactiver les signaux mode et Mode2 lorsque le mode tracking n'est pas activé (strap soudé).
+Inversion du signal de track actif (le strap doit être soudé pour activer le mode tracking)
+Les deux leds clignotent vert par alterance lorsque le mode calibration est actif.
+Probleme avec asservisement NOK !
+
+Version v0.21 du 14/12/2017  94%   // MAJOR VERSION 
+--------------------------------
+(Version fonctionnelle.)
+Checksum pof : 002DD47F
+
+Fonctionnement ok avec mode calibration 0/-80dB d'atténuation qui commute toute les 5s environ
+pour permettre le réglage facile du gain/offset de l'AD8310.Les deux LEDs vertes clignotent 
+à tour de role pendant pendant la clibration.
+La fermeture du strap "R44" permet de rendre active les fonction de mesure en dBV et tracking.
+
+A prévoir pour v0.22 :
+1/ affichage au démarrage du n° de version ?
+(ou affchage en mettant en autre strap ?)
+
+Améliorartion de l'asservissement :
+1/ Butée aux limites (basse, haute semble ok).
+2/ Suivie d'une valeur d'entrée mouvante ?
+3/ voir le raffraichissement lors de la rotation du codeur...
+
+Version v0.22 du 13/01/18  94%
+--------------------------------
+Checksum pof : 002E3A92
+Tested OK.
+Various bug fix on ADC reading and average block.
+
+Added functions :
+1/ Adding version display at startup here: "u022"--> work OK
+2/ Adding fast relay update rate input option for audio attenuator use (250ms instead of 2s) 2nd jumper position  --> work OK
+3/ Changing minimum dBV setting in Auto mode to -85dBV to avoid  unreachable dBV target value.(range o tracking is now -85 / +10 dBV).
+4/ tracking mode is more accurate (+/-0.5dB max) and control loop is now alway operate if input signal level move.
+To be added for future version : Indication on display when target value in unreachable(?)
+
+
+Version v0.23 du 26/01/18 --  MAJOR VERSION
+------------------------------------------------
+Checksum pof : 002D939B
+Tested OK. 94% full         
+(For compiling, fitter option is set to minimel area).
+
+Adding uart Rx/Tx module to control attenuator value (Bluetooth uart).
+Version is tested ok with HC-06 Bluetooth UART PCB (from aliexpress)
+Allow direct attenuation setting 0 to 255 for 0 to -127.5dB in Manual mode.
+Send in signed binary form (sign+7bits) the dBV output value after each 
+received attenuation command (1 dB resolution).
+Rx signal input is X16-3 header.
+Tx signal output is X16-5 header.
+
+JUMPERS on connector X10 (active when present)
+1 - Calibration mode
+2 - Fast mode
+3 - UART enable
+                                                 
+
+Version v0.24 du 16/04/18 --  MAJOR VERSION
+------------------------------------------------
+Fixed FPGA pin66 input that must be with internal week pull-up
+for proper working ! (Quiet mode switch input)
+Checksum pof :  002D86AC
+Version number is changed to 0.24.
+
+Version v0.25 du 30/04/18 --  MAJOR VERSION
+---------------------------------------------
+To avoid high level spike because of Ton/Toff relay dissymetry,
+a break-before make function is added.
+If made a delay when relay is switched on to off but no delay
+when off to on.
+Checksum pof :  002D4D50
+Version number is changed to 0.25
+
+
+
+ 
